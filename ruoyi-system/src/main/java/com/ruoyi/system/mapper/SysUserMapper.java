@@ -22,6 +22,7 @@ public interface SysUserMapper extends BaseMapper<SysUser>
      * @return 用户信息集合信息
      */
     public List<SysUser> selectUserList(SysUser sysUser);
+//    public IPage<SysUser> selectUserList(SysUser sysUser,Page<SysUser> page);
 
     /**
      * 根据条件分页查询已配用户角色列表

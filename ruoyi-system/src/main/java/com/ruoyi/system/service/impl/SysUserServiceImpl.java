@@ -3,6 +3,7 @@ package com.ruoyi.system.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import javax.validation.Validator;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -44,22 +45,22 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>  imp
 {
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
-    @Autowired
+    @Resource
     private SysUserMapper userMapper;
 
-    @Autowired
+    @Resource
     private SysRoleMapper roleMapper;
 
-    @Autowired
+    @Resource
     private SysPostMapper postMapper;
 
-    @Autowired
+    @Resource
     private SysUserRoleMapper userRoleMapper;
 
-    @Autowired
+    @Resource
     private SysUserPostMapper userPostMapper;
 
-    @Autowired
+    @Resource
     private ISysConfigService configService;
 
     @Autowired
@@ -76,6 +77,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>  imp
     public List<SysUser> selectUserList(SysUser user)
     {
         return userMapper.selectUserList(user);
+//        Page<SysUser> page = new Page<>(1,10);
+//        IPage<SysUser> res = userMapper.selectUserList(user,page);
+//        return res.getRecords();
     }
 
     /**
