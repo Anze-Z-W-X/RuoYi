@@ -1,6 +1,9 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.system.domain.SysConfig;
 
 /**
@@ -8,7 +11,7 @@ import com.ruoyi.system.domain.SysConfig;
  * 
  * @author ruoyi
  */
-public interface ISysConfigService
+public interface ISysConfigService extends IService<SysConfig>
 {
     /**
      * 查询参数配置信息
