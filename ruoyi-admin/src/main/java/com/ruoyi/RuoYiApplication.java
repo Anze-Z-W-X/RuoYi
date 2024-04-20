@@ -1,8 +1,11 @@
 package com.ruoyi;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 
 /**
  * 启动程序
@@ -10,6 +13,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @author ruoyi
  */
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+@ComponentScan({"com.thirteen.smon","com.ruoyi"})
+@MapperScan({"com.thirteen.smon.system.mapper"})
 public class RuoYiApplication
 {
     public static void main(String[] args)

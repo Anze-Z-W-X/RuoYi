@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.mapper.MrdsPostsThemeMapper">
+    
+    <resultMap type="com.ruoyi.domain.MrdsPostsTheme" id="MrdsPostsThemeResult">
+        <result property="id"    column="id"    />
+        <result property="sex"    column="sex"    />
+        <result property="title"    column="title"    />
+        <result property="coverUrl"    column="coverUrl"    />
+        <result property="description"    column="description"    />
+        <result property="startAt"    column="startAt"    />
+        <result property="endAt"    column="endAt"    />
+        <result property="postsNums"    column="postsNums"    />
+        <result property="status"    column="status"    />
+        <result property="createdAt"    column="createdAt"    />
+        <result property="updatedAt"    column="updatedAt"    />
+    </resultMap>
+
+    <sql id="selectMrdsPostsThemeVo">
+        select id, sex, title, coverUrl, description, startAt, endAt, postsNums, status, createdAt, updatedAt from mrds_posts_theme
+    </sql>
+
+    <select id="selectMrdsPostsThemeList" parameterType="com.ruoyi.domain.MrdsPostsTheme" resultMap="MrdsPostsThemeResult">
+        <include refid="selectMrdsPostsThemeVo"/>
+        <where>  
+            <if test="sex != null "> and sex = #{sex}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="coverUrl != null  and coverUrl != ''"> and coverUrl = #{coverUrl}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="startAt != null "> and startAt = #{startAt}</if>
+            <if test="endAt != null "> and endAt = #{endAt}</if>
+            <if test="postsNums != null "> and postsNums = #{postsNums}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createdAt != null "> and createdAt = #{createdAt}</if>
+            <if test="updatedAt != null "> and updatedAt = #{updatedAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectMrdsPostsThemeById" parameterType="Long" resultMap="MrdsPostsThemeResult">
+        <include refid="selectMrdsPostsThemeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMrdsPostsTheme" parameterType="com.ruoyi.domain.MrdsPostsTheme" useGeneratedKeys="true" keyProperty="id">
+        insert into mrds_posts_theme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sex != null">sex,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="coverUrl != null and coverUrl != ''">coverUrl,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="startAt != null">startAt,</if>
+            <if test="endAt != null">endAt,</if>
+            <if test="postsNums != null">postsNums,</if>
+            <if test="status != null">status,</if>
+            <if test="createdAt != null">createdAt,</if>
+            <if test="updatedAt != null">updatedAt,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sex != null">#{sex},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="coverUrl != null and coverUrl != ''">#{coverUrl},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="startAt != null">#{startAt},</if>
+            <if test="endAt != null">#{endAt},</if>
+            <if test="postsNums != null">#{postsNums},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMrdsPostsTheme" parameterType="com.ruoyi.domain.MrdsPostsTheme">
+        update mrds_posts_theme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="coverUrl != null and coverUrl != ''">coverUrl = #{coverUrl},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="startAt != null">startAt = #{startAt},</if>
+            <if test="endAt != null">endAt = #{endAt},</if>
+            <if test="postsNums != null">postsNums = #{postsNums},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createdAt != null">createdAt = #{createdAt},</if>
+            <if test="updatedAt != null">updatedAt = #{updatedAt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteMrdsPostsThemeById" parameterType="Long">
+        update mrds_posts_theme set status = 0 where id = #{id}
+    </update>
+
+    <update id="deleteMrdsPostsThemeByIds" parameterType="String">
+        update mrds_posts_theme set status = 0 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>
