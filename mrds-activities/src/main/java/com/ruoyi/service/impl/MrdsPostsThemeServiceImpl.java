@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.utils.mrds.bean.BeanCopyUtils;
 import com.ruoyi.common.utils.mrds.date.ChangeDateUtils;
 import com.ruoyi.common.utils.mrds.url.CoverUrlUtils;
@@ -51,7 +53,10 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
     @Override
     public List<MrdsPostsThemeVo> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme)
     {
+        PageHelper.startPage(1,10);
         List<MrdsPostsTheme> mrdsPostsThemes = mrdsPostsThemeMapper.selectMrdsPostsThemeList(mrdsPostsTheme);
+        PageInfo<MrdsPostsTheme> pageInfo = new PageInfo<>(mrdsPostsThemes);
+        mrdsPostsThemes = pageInfo.getList();
         List<MrdsPostsThemeVo> mrdsPostsThemeVos = new ArrayList<>();
         if(!ObjectUtils.isEmpty(mrdsPostsThemes)){
             mrdsPostsThemes.forEach(m -> {

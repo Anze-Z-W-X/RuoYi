@@ -175,6 +175,9 @@
     <!-- 添加或修改活动管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="性别" prop="sex">
+          <el-input v-model="form.sex" placeholder="请输入活动要求性别" />
+        </el-form-item>
         <el-form-item label="主题名称" prop="title">
           <el-input v-model="form.title" placeholder="请输入主题名称" />
         </el-form-item>
@@ -185,20 +188,37 @@
           <el-input v-model="form.description" placeholder="请输入描述" />
         </el-form-item>
         <el-form-item label="主题开始时间" prop="startAt">
-          <el-input v-model="form.startAt" placeholder="请输入主题开始时间" />
+          <!-- <el-input v-model="form.startAt" placeholder="请输入主题开始时间" /> -->
+          <el-date-picker
+            v-model="form.startAt"
+            type="date"
+            placeholder="选择日期"
+            :picker-options="pickerOptions"
+            value-format="yyyy-MM-dd"
+          />
         </el-form-item>
         <el-form-item label="主题结束时间" prop="endAt">
-          <el-input v-model="form.endAt" placeholder="请输入主题结束时间" />
+          <!-- <el-input v-model="form.endAt" placeholder="请输入主题结束时间" /> -->
+          <el-date-picker
+            v-model="form.endAt"
+            type="date"
+            placeholder="选择日期"
+            :picker-options="pickerOptions"
+            value-format="yyyy-MM-dd"
+          />
         </el-form-item>
         <el-form-item label="主题下帖子数量" prop="postsNums">
           <el-input v-model="form.postsNums" placeholder="请输入主题下帖子数量" />
         </el-form-item>
-        <el-form-item label="创建时间" prop="createdAt">
+        <!-- <el-form-item label="状态" prop="status">
+          <el-input v-model="form.description" placeholder="请输入状态" />
+        </el-form-item> -->
+        <!-- <el-form-item label="创建时间" prop="createdAt">
           <el-input v-model="form.createdAt" placeholder="请输入创建时间" />
         </el-form-item>
         <el-form-item label="更新时间" prop="updatedAt">
           <el-input v-model="form.updatedAt" placeholder="请输入更新时间" />
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -274,14 +294,14 @@ export default {
           { required: true, message: "主题下帖子数量不能为空", trigger: "blur" }
         ],
         status: [
-          { required: true, message: "状态 10 上架中 0 下架不能为空", trigger: "change" }
+          { required: false, trigger: "change" }
         ],
-        createdAt: [
-          { required: true, message: "创建时间不能为空", trigger: "blur" }
-        ],
-        updatedAt: [
-          { required: true, message: "更新时间不能为空", trigger: "blur" }
-        ]
+        // createdAt: [
+        //   { required: true, message: "创建时间不能为空", trigger: "blur" }
+        // ],
+        // updatedAt: [
+        //   { required: true, message: "更新时间不能为空", trigger: "blur" }
+        // ]
       }
     };
   },
@@ -358,6 +378,8 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.startAt = form.startAt.getTime()/1000;
+          this.form.endAt = form.endAt.getTime()/1000;
           if (this.form.id != null) {
             updatePostTheme(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
@@ -389,7 +411,13 @@ export default {
       this.download('mrds/postTheme/export', {
         ...this.queryParams
       }, `postTheme_${new Date().getTime()}.xlsx`)
-    }
+    },
+    /** 选择日期操作 */
+    pickerOptions: {
+			disabledDate(time) {
+				return time.getTime() <= new Date() - 24 * 60 * 60 * 1000;
+		  }
+	  }
   }
 };
 </script>

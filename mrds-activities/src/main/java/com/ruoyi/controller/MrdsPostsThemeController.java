@@ -43,7 +43,7 @@ public class MrdsPostsThemeController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(MrdsPostsTheme mrdsPostsTheme)
     {
-        startPage();
+//        startPage();
         List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
         return getDataTable(list);
     }
