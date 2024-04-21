@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.mapper.MrdsPostsThemeMapper">
     
-    <resultMap type="com.ruoyi.domain.MrdsPostsTheme" id="MrdsPostsThemeResult">
+    <resultMap type="com.ruoyi.domain.entity.MrdsPostsTheme" id="MrdsPostsThemeResult">
         <result property="id"    column="id"    />
         <result property="sex"    column="sex"    />
         <result property="title"    column="title"    />
@@ -22,11 +22,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, sex, title, coverUrl, description, startAt, endAt, postsNums, status, createdAt, updatedAt from mrds_posts_theme
     </sql>
 
-    <select id="selectMrdsPostsThemeList" parameterType="com.ruoyi.domain.MrdsPostsTheme" resultMap="MrdsPostsThemeResult">
+    <select id="selectMrdsPostsThemeList" parameterType="com.ruoyi.domain.entity.MrdsPostsTheme" resultMap="MrdsPostsThemeResult">
         <include refid="selectMrdsPostsThemeVo"/>
         <where>  
             <if test="sex != null "> and sex = #{sex}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="title != null  and title != ''"> and title like concat('%',#{title},'%')</if>
             <if test="coverUrl != null  and coverUrl != ''"> and coverUrl = #{coverUrl}</if>
             <if test="description != null  and description != ''"> and description = #{description}</if>
             <if test="startAt != null "> and startAt = #{startAt}</if>
@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
         
-    <insert id="insertMrdsPostsTheme" parameterType="com.ruoyi.domain.MrdsPostsTheme" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertMrdsPostsTheme" parameterType="com.ruoyi.domain.entity.MrdsPostsTheme" useGeneratedKeys="true" keyProperty="id">
         insert into mrds_posts_theme
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="sex != null">sex,</if>
@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateMrdsPostsTheme" parameterType="com.ruoyi.domain.MrdsPostsTheme">
+    <update id="updateMrdsPostsTheme" parameterType="com.ruoyi.domain.entity.MrdsPostsTheme">
         update mrds_posts_theme
         <trim prefix="SET" suffixOverrides=",">
             <if test="sex != null">sex = #{sex},</if>

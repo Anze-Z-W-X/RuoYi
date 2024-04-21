@@ -9,23 +9,31 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="封面图片" prop="coverUrl">
+      <el-form-item label="性别" prop="sex">
+        <el-input
+          v-model="queryParams.sex"
+          placeholder="请输入性别"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <!-- <el-form-item label="封面图片" prop="coverUrl">
         <el-input
           v-model="queryParams.coverUrl"
           placeholder="请输入封面图片"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="描述" prop="description">
+      </el-form-item> -->
+      <!-- <el-form-item label="描述" prop="description">
         <el-input
           v-model="queryParams.description"
           placeholder="请输入描述"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="主题开始时间" prop="startAt">
+      </el-form-item> -->
+      <el-form-item label="开始时间" prop="startAt">
         <el-input
           v-model="queryParams.startAt"
           placeholder="请输入主题开始时间"
@@ -33,7 +41,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="主题结束时间" prop="endAt">
+      <el-form-item label="结束时间" prop="endAt">
         <el-input
           v-model="queryParams.endAt"
           placeholder="请输入主题结束时间"
@@ -41,15 +49,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="主题下帖子数量" prop="postsNums">
+      <!-- <el-form-item label="主题下帖子数量" prop="postsNums">
         <el-input
           v-model="queryParams.postsNums"
           placeholder="请输入主题下帖子数量"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="创建时间" prop="createdAt">
+      </el-form-item> -->
+      <!-- <el-form-item label="创建时间" prop="createdAt">
         <el-input
           v-model="queryParams.createdAt"
           placeholder="请输入创建时间"
@@ -64,7 +72,7 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -138,14 +146,20 @@
         </template>
       </el-table-column>
       <el-table-column label="id" align="center" prop="id" sortable/>
-      <el-table-column label="性别 1 男；2 女" align="center" prop="sex" />
+      <el-table-column label="性别" align="center" prop="sex" #default="scope">
+        {{ scope.row.sex == 1 ? '男':'女' }}
+      </el-table-column>
       <el-table-column label="主题名称" align="center" prop="title" />
-      <el-table-column label="封面图片" align="center" prop="coverUrl" />
+      <el-table-column label="封面图片" align="center" prop="coverUrl" #default="scope">
+        <img :src="scope.row.coverUrl" width="50"/>
+      </el-table-column>
       <el-table-column label="描述" align="center" prop="description" />
       <el-table-column label="主题开始时间" align="center" prop="startAt" />
       <el-table-column label="主题结束时间" align="center" prop="endAt" />
-      <el-table-column label="主题下帖子数量" align="center" prop="postsNums" />
-      <el-table-column label="状态 10 上架中 0 下架" align="center" prop="status" />
+      <el-table-column label="主题下帖子数量" align="center" prop="postsNums"/>
+      <el-table-column label="状态" align="center" prop="status"  #default="scope">
+        {{ scope.row.status == 10 ? '正常' : '停用' }}
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createdAt" />
       <el-table-column label="更新时间" align="center" prop="updatedAt" />
     </el-table>
@@ -309,6 +323,8 @@ export default {
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
+      if(this.queryParams.sex==='男')this.queryParams.sex='1';
+      if(this.queryParams.sex==='女')this.queryParams.sex='2';
       this.getList();
     },
     /** 重置按钮操作 */

@@ -3,7 +3,8 @@ package com.ruoyi.service;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ruoyi.domain.MrdsPostsTheme;
+import com.ruoyi.domain.entity.MrdsPostsTheme;
+import com.ruoyi.domain.vo.MrdsPostsThemeVo;
 
 /**
  * 活动管理Service接口
@@ -19,7 +20,7 @@ public interface IMrdsPostsThemeService extends IService<MrdsPostsTheme>
      * @param id 活动管理主键
      * @return 活动管理
      */
-    public MrdsPostsTheme selectMrdsPostsThemeById(Long id);
+    public MrdsPostsThemeVo selectMrdsPostsThemeById(Long id);
 
     /**
      * 查询活动管理列表
@@ -27,7 +28,7 @@ public interface IMrdsPostsThemeService extends IService<MrdsPostsTheme>
      * @param mrdsPostsTheme 活动管理
      * @return 活动管理集合
      */
-    public List<MrdsPostsTheme> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme);
+    public List<MrdsPostsThemeVo> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme);
 
     /**
      * 新增活动管理

@@ -1,14 +1,18 @@
 package com.ruoyi.service.impl;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ruoyi.common.utils.mrds.bean.BeanCopyUtils;
+import com.ruoyi.common.utils.mrds.date.ChangeDateUtils;
+import com.ruoyi.common.utils.mrds.url.CoverUrlUtils;
+import com.ruoyi.domain.vo.MrdsPostsThemeVo;
 import org.springframework.stereotype.Service;
 import com.ruoyi.mapper.MrdsPostsThemeMapper;
-import com.ruoyi.domain.MrdsPostsTheme;
+import com.ruoyi.domain.entity.MrdsPostsTheme;
 import com.ruoyi.service.IMrdsPostsThemeService;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 
@@ -31,9 +35,11 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
      * @return 活动管理
      */
     @Override
-    public MrdsPostsTheme selectMrdsPostsThemeById(Long id)
+    public MrdsPostsThemeVo selectMrdsPostsThemeById(Long id)
     {
-        return mrdsPostsThemeMapper.selectMrdsPostsThemeById(id);
+        MrdsPostsTheme mrdsPostsTheme = mrdsPostsThemeMapper.selectMrdsPostsThemeById(id);
+        mrdsPostsTheme.setCoverUrl(CoverUrlUtils.getCoverUrl(mrdsPostsTheme.getCoverUrl()));
+        return changeToVo(mrdsPostsTheme);
     }
 
     /**
@@ -43,9 +49,17 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
      * @return 活动管理
      */
     @Override
-    public List<MrdsPostsTheme> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme)
+    public List<MrdsPostsThemeVo> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme)
     {
-        return mrdsPostsThemeMapper.selectMrdsPostsThemeList(mrdsPostsTheme);
+        List<MrdsPostsTheme> mrdsPostsThemes = mrdsPostsThemeMapper.selectMrdsPostsThemeList(mrdsPostsTheme);
+        List<MrdsPostsThemeVo> mrdsPostsThemeVos = new ArrayList<>();
+        if(!ObjectUtils.isEmpty(mrdsPostsThemes)){
+            mrdsPostsThemes.forEach(m -> {
+                m.setCoverUrl(CoverUrlUtils.getCoverUrl(m.getCoverUrl()));
+                mrdsPostsThemeVos.add(changeToVo(m));
+            });
+        }
+        return mrdsPostsThemeVos;
     }
 
     /**
@@ -57,8 +71,8 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
     @Override
     public int insertMrdsPostsTheme(MrdsPostsTheme mrdsPostsTheme)
     {
-        mrdsPostsTheme.setCreatedAt(new Date().getTime());
-        mrdsPostsTheme.setUpdatedAt(new Date().getTime());
+        mrdsPostsTheme.setCreatedAt(ChangeDateUtils.getCurrentUnixTime());
+        mrdsPostsTheme.setUpdatedAt(ChangeDateUtils.getCurrentUnixTime());
         return mrdsPostsThemeMapper.insertMrdsPostsTheme(mrdsPostsTheme);
     }
 
@@ -71,7 +85,7 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
     @Override
     public int updateMrdsPostsTheme(MrdsPostsTheme mrdsPostsTheme)
     {
-        mrdsPostsTheme.setUpdatedAt(new Date().getTime());
+        mrdsPostsTheme.setUpdatedAt(ChangeDateUtils.getCurrentUnixTime());
         return mrdsPostsThemeMapper.updateMrdsPostsTheme(mrdsPostsTheme);
     }
 
@@ -97,5 +111,15 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
     public int deleteMrdsPostsThemeById(Long id)
     {
         return mrdsPostsThemeMapper.deleteMrdsPostsThemeById(id);
+    }
+
+
+    public MrdsPostsThemeVo changeToVo(MrdsPostsTheme mrdsPostsTheme){
+        MrdsPostsThemeVo mrdsPostsThemeVo = BeanCopyUtils.copyBean(mrdsPostsTheme,MrdsPostsThemeVo.class);
+        mrdsPostsThemeVo.setStartAt(ChangeDateUtils.getUnixTransferTime(mrdsPostsTheme.getStartAt()));
+        mrdsPostsThemeVo.setEndAt(ChangeDateUtils.getUnixTransferTime(mrdsPostsTheme.getEndAt()));
+        mrdsPostsThemeVo.setCreatedAt(ChangeDateUtils.getUnixTransferTime(mrdsPostsTheme.getCreatedAt()));
+        mrdsPostsThemeVo.setUpdatedAt(ChangeDateUtils.getUnixTransferTime(mrdsPostsTheme.getUpdatedAt()));
+        return mrdsPostsThemeVo;
     }
 }

@@ -1,4 +1,4 @@
-package com.ruoyi.domain;
+package com.ruoyi.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import org.apache.commons.lang3.builder.ToStringBuilder;

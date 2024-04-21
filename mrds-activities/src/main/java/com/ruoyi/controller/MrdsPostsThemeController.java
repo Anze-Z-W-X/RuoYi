@@ -2,6 +2,8 @@ package com.ruoyi.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.domain.vo.MrdsPostsThemeVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.domain.MrdsPostsTheme;
+import com.ruoyi.domain.entity.MrdsPostsTheme;
 import com.ruoyi.service.IMrdsPostsThemeService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
@@ -42,7 +44,7 @@ public class MrdsPostsThemeController extends BaseController
     public TableDataInfo list(MrdsPostsTheme mrdsPostsTheme)
     {
         startPage();
-        List<MrdsPostsTheme> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
+        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
         return getDataTable(list);
     }
 
@@ -54,8 +56,8 @@ public class MrdsPostsThemeController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, MrdsPostsTheme mrdsPostsTheme)
     {
-        List<MrdsPostsTheme> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
-        ExcelUtil<MrdsPostsTheme> util = new ExcelUtil<MrdsPostsTheme>(MrdsPostsTheme.class);
+        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
+        ExcelUtil<MrdsPostsThemeVo> util = new ExcelUtil<MrdsPostsThemeVo>(MrdsPostsThemeVo.class);
         util.exportExcel(response, list, "活动管理数据");
     }
 
@@ -64,7 +66,7 @@ public class MrdsPostsThemeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('mrds:postTheme:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    public AjaxResult getPostThemeById(@PathVariable("id") Long id)
     {
         return success(mrdsPostsThemeService.selectMrdsPostsThemeById(id));
     }
@@ -75,7 +77,7 @@ public class MrdsPostsThemeController extends BaseController
     @PreAuthorize("@ss.hasPermi('mrds:postTheme:add')")
     @Log(title = "活动管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody MrdsPostsTheme mrdsPostsTheme)
+    public AjaxResult addPostTheme(@RequestBody MrdsPostsTheme mrdsPostsTheme)
     {
         return toAjax(mrdsPostsThemeService.insertMrdsPostsTheme(mrdsPostsTheme));
     }
@@ -86,7 +88,7 @@ public class MrdsPostsThemeController extends BaseController
     @PreAuthorize("@ss.hasPermi('mrds:postTheme:edit')")
     @Log(title = "活动管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody MrdsPostsTheme mrdsPostsTheme)
+    public AjaxResult updatePostTheme(@RequestBody MrdsPostsTheme mrdsPostsTheme)
     {
         return toAjax(mrdsPostsThemeService.updateMrdsPostsTheme(mrdsPostsTheme));
     }
@@ -97,7 +99,7 @@ public class MrdsPostsThemeController extends BaseController
     @PreAuthorize("@ss.hasPermi('mrds:postTheme:remove')")
     @Log(title = "活动管理", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+    public AjaxResult delPostTheme(@PathVariable Long[] ids)    //逻辑删除
     {
         return toAjax(mrdsPostsThemeService.deleteMrdsPostsThemeByIds(ids));
     }
