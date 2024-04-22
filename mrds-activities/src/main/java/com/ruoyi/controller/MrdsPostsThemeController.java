@@ -41,27 +41,27 @@ public class MrdsPostsThemeController extends BaseController
      * 查询活动管理列表
      */
     @PreAuthorize("@ss.hasPermi('mrds:postTheme:list')")
-    @GetMapping("/list")
-    public PageResponse<MrdsPostsThemeVo> list(MrdsPostsTheme mrdsPostsTheme)
+    @GetMapping("/list/{pageNum}/{pageSize}")
+    public PageResponse<MrdsPostsThemeVo> list(@PathVariable("pageNum") Integer pageNum,@PathVariable("pageSize") Integer pageSize,MrdsPostsTheme mrdsPostsTheme)
     {
 //        startPage();
 //        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
 //        return getDataTable(list);
-        return mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
+        return mrdsPostsThemeService.selectMrdsPostsThemeList(pageNum,pageSize,mrdsPostsTheme);
     }
 
     /**
      * 导出活动管理列表
      */
-    @PreAuthorize("@ss.hasPermi('mrds:postTheme:export')")
-    @Log(title = "活动管理", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, MrdsPostsTheme mrdsPostsTheme)
-    {
-        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme).getRows();
-        ExcelUtil<MrdsPostsThemeVo> util = new ExcelUtil<MrdsPostsThemeVo>(MrdsPostsThemeVo.class);
-        util.exportExcel(response, list, "活动管理数据");
-    }
+//    @PreAuthorize("@ss.hasPermi('mrds:postTheme:export')")
+//    @Log(title = "活动管理", businessType = BusinessType.EXPORT)
+//    @PostMapping("/export")
+//    public void export(HttpServletResponse response, MrdsPostsTheme mrdsPostsTheme)
+//    {
+//        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme).getRows();
+//        ExcelUtil<MrdsPostsThemeVo> util = new ExcelUtil<MrdsPostsThemeVo>(MrdsPostsThemeVo.class);
+//        util.exportExcel(response, list, "活动管理数据");
+//    }
 
     /**
      * 获取活动管理详细信息

@@ -10,13 +10,19 @@
         />
       </el-form-item>
       <el-form-item label="性别" prop="sex">
+        <el-select v-model="queryParams.sex" placeholder="请选择"  style="width: 70%;" clearable @keyup.enter.native="handleQuery">
+            <el-option :value="1" label="男"></el-option>
+            <el-option :value="2" label="女"></el-option>
+        </el-select>
+      </el-form-item>
+      <!-- <el-form-item label="性别" prop="sex">
         <el-input
           v-model="queryParams.sex"
           placeholder="请输入性别"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item> -->
       <!-- <el-form-item label="封面图片" prop="coverUrl">
         <el-input
           v-model="queryParams.coverUrl"
@@ -33,7 +39,25 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item> -->
-      <el-form-item label="开始时间" prop="startAt">
+      <el-form-item label="主题开始时间" prop="startAt">
+          <!-- <el-input v-model="form.startAt" placeholder="请输入主题开始时间" /> -->
+          <el-date-picker
+            v-model="queryParams.startAt"
+            type="datetime"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+          />
+        </el-form-item>
+        <el-form-item label="主题结束时间" prop="endAt">
+          <!-- <el-input v-model="form.endAt" placeholder="请输入主题结束时间" /> -->
+          <el-date-picker
+            v-model="queryParams.endAt"
+            type="datetime"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+          />
+        </el-form-item>
+      <!-- <el-form-item label="开始时间" prop="startAt">
         <el-input
           v-model="queryParams.startAt"
           placeholder="请输入主题开始时间"
@@ -48,7 +72,7 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item> -->
       <!-- <el-form-item label="主题下帖子数量" prop="postsNums">
         <el-input
           v-model="queryParams.postsNums"
@@ -167,6 +191,7 @@
     <pagination
       v-show="total>0"
       :total="total"
+      :page-sizes="[5,20,50]"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
@@ -270,7 +295,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 5,
         sex: null,
         title: null,
         coverUrl: null,
@@ -326,7 +351,7 @@ export default {
     /** 查询活动管理列表 */
     getList() {
       this.loading = true;
-      listPostTheme(this.queryParams).then(response => {
+      listPostTheme(this.queryParams.pageNum,this.queryParams.pageSize,this.queryParams).then(response => {
         this.postThemeList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -356,6 +381,8 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
+      this.queryParams.startAt = new Date(this.queryParams.startAt).getTime()/1000;
+      this.queryParams.endAt = new Date(this.queryParams.endAt).getTime()/1000;
       this.queryParams.pageNum = 1;
       this.getList();
     },

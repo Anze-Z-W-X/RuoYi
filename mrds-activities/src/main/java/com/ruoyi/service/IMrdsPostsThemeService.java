@@ -29,7 +29,7 @@ public interface IMrdsPostsThemeService extends IService<MrdsPostsTheme>
      * @param mrdsPostsTheme 活动管理
      * @return 活动管理集合
      */
-    public PageResponse<MrdsPostsThemeVo> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme);
+    public PageResponse<MrdsPostsThemeVo> selectMrdsPostsThemeList(Integer pageNum, Integer pageSize,MrdsPostsTheme mrdsPostsTheme);
 
     /**
      * 新增活动管理

@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 查询活动管理列表
-export function listPostTheme(query) {
+export function listPostTheme(pageNum,pageSize,query) {
   return request({
-    url: '/mrds/postTheme/list',
+    url: `/mrds/postTheme/list/${pageNum}/${pageSize}`,
     method: 'get',
     params: query
   })

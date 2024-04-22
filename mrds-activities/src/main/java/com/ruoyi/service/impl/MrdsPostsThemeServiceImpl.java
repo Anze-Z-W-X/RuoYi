@@ -52,11 +52,10 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
      * @return 活动管理
      */
     @Override
-    public PageResponse<MrdsPostsThemeVo> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme)
+    public PageResponse<MrdsPostsThemeVo> selectMrdsPostsThemeList(Integer pageNum, Integer pageSize,MrdsPostsTheme mrdsPostsTheme)
     {
-        PageHelper.startPage(1,10);
+        PageHelper.startPage(pageNum,pageSize);
         List<MrdsPostsTheme> mrdsPostsThemes = mrdsPostsThemeMapper.selectMrdsPostsThemeList(mrdsPostsTheme);
-        System.out.println("mrdsPostsThemes.size() = " + mrdsPostsThemes.size());
         PageInfo pageInfo = new PageInfo<>(mrdsPostsThemes);
         List<MrdsPostsThemeVo> mrdsPostsThemeVos = new ArrayList<>();
         if(!ObjectUtils.isEmpty(mrdsPostsThemes)){
@@ -65,9 +64,6 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
                 mrdsPostsThemeVos.add(changeToVo(m));
             }
         }
-        System.out.println("mrdsPostsThemeVos.size() = " + mrdsPostsThemeVos.size());
-//        System.out.println("pageInfo.getTotal() = " + pageInfo.getTotal());
-//        System.out.println("pageInfo.getPages() = " + pageInfo.getPages());
         return new PageResponse<MrdsPostsThemeVo>(mrdsPostsThemeVos,pageInfo.getTotal());
     }
 
