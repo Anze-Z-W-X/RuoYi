@@ -3,6 +3,7 @@ package com.ruoyi.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.domain.response.PageResponse;
 import com.ruoyi.domain.vo.MrdsPostsThemeVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,12 @@ public class MrdsPostsThemeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('mrds:postTheme:list')")
     @GetMapping("/list")
-    public TableDataInfo list(MrdsPostsTheme mrdsPostsTheme)
+    public PageResponse<MrdsPostsThemeVo> list(MrdsPostsTheme mrdsPostsTheme)
     {
 //        startPage();
-        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
-        return getDataTable(list);
+//        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
+//        return getDataTable(list);
+        return mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
     }
 
     /**
@@ -56,7 +58,7 @@ public class MrdsPostsThemeController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, MrdsPostsTheme mrdsPostsTheme)
     {
-        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme);
+        List<MrdsPostsThemeVo> list = mrdsPostsThemeService.selectMrdsPostsThemeList(mrdsPostsTheme).getRows();
         ExcelUtil<MrdsPostsThemeVo> util = new ExcelUtil<MrdsPostsThemeVo>(MrdsPostsThemeVo.class);
         util.exportExcel(response, list, "活动管理数据");
     }

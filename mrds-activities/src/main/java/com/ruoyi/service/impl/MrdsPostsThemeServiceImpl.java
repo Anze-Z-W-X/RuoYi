@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.utils.mrds.bean.BeanCopyUtils;
 import com.ruoyi.common.utils.mrds.date.ChangeDateUtils;
 import com.ruoyi.common.utils.mrds.url.CoverUrlUtils;
+import com.ruoyi.domain.response.PageResponse;
 import com.ruoyi.domain.vo.MrdsPostsThemeVo;
 import org.springframework.stereotype.Service;
 import com.ruoyi.mapper.MrdsPostsThemeMapper;
@@ -51,20 +52,23 @@ public class MrdsPostsThemeServiceImpl extends ServiceImpl<MrdsPostsThemeMapper,
      * @return 活动管理
      */
     @Override
-    public List<MrdsPostsThemeVo> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme)
+    public PageResponse<MrdsPostsThemeVo> selectMrdsPostsThemeList(MrdsPostsTheme mrdsPostsTheme)
     {
         PageHelper.startPage(1,10);
         List<MrdsPostsTheme> mrdsPostsThemes = mrdsPostsThemeMapper.selectMrdsPostsThemeList(mrdsPostsTheme);
-        PageInfo<MrdsPostsTheme> pageInfo = new PageInfo<>(mrdsPostsThemes);
-        mrdsPostsThemes = pageInfo.getList();
+        System.out.println("mrdsPostsThemes.size() = " + mrdsPostsThemes.size());
+        PageInfo pageInfo = new PageInfo<>(mrdsPostsThemes);
         List<MrdsPostsThemeVo> mrdsPostsThemeVos = new ArrayList<>();
         if(!ObjectUtils.isEmpty(mrdsPostsThemes)){
-            mrdsPostsThemes.forEach(m -> {
+            for(MrdsPostsTheme m : mrdsPostsThemes){
                 m.setCoverUrl(CoverUrlUtils.getCoverUrl(m.getCoverUrl()));
                 mrdsPostsThemeVos.add(changeToVo(m));
-            });
+            }
         }
-        return mrdsPostsThemeVos;
+        System.out.println("mrdsPostsThemeVos.size() = " + mrdsPostsThemeVos.size());
+//        System.out.println("pageInfo.getTotal() = " + pageInfo.getTotal());
+//        System.out.println("pageInfo.getPages() = " + pageInfo.getPages());
+        return new PageResponse<MrdsPostsThemeVo>(mrdsPostsThemeVos,pageInfo.getTotal());
     }
 
     /**
